@@ -16,25 +16,29 @@
     </div>
     <div class="wrapper">
       <section class = "section splash">
-        <div>
+        <div class="sp-div">
           <h3>Please pick either a one player or two player game.</h3>
         </div>
       </section>
       
       <!-- 1 Player board -->
       <section class="section one-player-board">
-        <h3 id="player-name">name </h3>
-        <h3 id="status">Ready</h3>
-        <h2 id="score">0</h2>
-        <div id="dice-img">
-          <!-- <img src="../media/die-three.png"> -->
-        </div>  
+        <div class="status-board">
+          <div>
+            <h3 class="player-name">name</h3>
+            <h3 id="status">Ready</h3>
+          </div>
+          <h2 class="score">Score: 0</h2>
+        </div>
+        <div class="dice-img"></div>  
         <button class="btn roll-btn">Roll</button>
-      </section>    
+      </section>   
+       <!--end of one player section  -->
 
       <!-- 2 player board -->
       <section class="section two-player-board">
-      </section>
+      </section> 
+      <!-- end of two player section -->
     </div>
     <script src="./src/main.js"></script>
   </body>

@@ -2,9 +2,9 @@ const btns = document.querySelectorAll(".btn");
 const splash = document.querySelector(".splash")
 const onePlayer = document.querySelector(".one-player-board");
 const twoPlayer = document.querySelector(".two-player-board");
-const playerName = document.getElementById("player-name")
-const scoreDisplay = document.getElementById("score")
-const diceImg = document.getElementById("dice-img")
+const playerName = document.querySelector(".player-name");
+const scoreDisplay = document.querySelector(".score");
+const diceImg = document.querySelector(".dice-img")
 const gameStatus = document.getElementById("status")
 let currentscore = 0
 let gameType = ""
@@ -24,28 +24,28 @@ const playAudio = (soundPath) => {
   audio.play();
 }
 
-
 const toggleVisible = (boardType) => {
   if (boardType === "splash") {
-    splash.style.display = "block";
+    splash.style.display = "";
     onePlayer.style.display = "none";
     twoPlayer.style.display = "none";
   } else if (boardType === "Player 1") {
     //remove splash screen if visible
-    if (splash.style.display === "block") {
+    if (splash.style.display === "") {
       splash.style.display = "none";
     }
     twoPlayer.style.display = "none";
     onePlayer.style.display = "";
   } else if (boardType === "Player 2") {
     //remove splash screen if visible
-    if (splash.style.display === "block") {
+    if (splash.style.display === "") {
       splash.style.display = "none";
     }
     onePlayer.style.display = "none";
     twoPlayer.style.display = "";
   }
 };
+
 
 
 // starts or resets the game variables to init
@@ -56,14 +56,16 @@ const startGame = (boardType) => {
   if (boardType === "Player 1") {
     currentscore = 0;
     playerName.innerHTML = boardType;
-    scoreDisplay.textContent = "0";
     gameStatus.textContent = "Ready to roll!";
     resetDiceImg();
     let dieImgSrc = defaultDiceImg;
     displayDiceImg(dieImgSrc);
   } else if (boardType === "Player 2") {
     // 2 player
-
+    twoPlayerBoard();
+    resetDiceImg();
+    let dieImgSrc = defaultDiceImg;
+    displayDiceImg(dieImgSrc);
   }
 };
 
@@ -80,46 +82,87 @@ btns.forEach((btn) => {
       //player button clicked
       gameType = btnClass.innerHTML;
       startGame(gameType)
-
+      
     }else if (btnClass.classList.contains("roll-btn")) {
       //roll dice button clicked
+      if (gameType === "Player 1"){
+        onePlayerRules(btnClass)
 
-      //TODO: this needs to be async as the score is being returned before end of roll animation
-      let roll = rollDice();
-      currentscore += roll;
-
-      let currentStatus = ""
-      if (roll === 1){
-        // score of 1 = insta-lose
-
-        currentStatus = "Lost! they rolled a 1"
-        playAudio(`${defaultMediaPath}lostGame.wav`);
-        toggleRollNewGameBtn(btnClass);
-
-      } else if ( currentscore >= 21 ) {
-        // win!
-       
-        scoreDisplay.textContent = currentscore;
-        currentStatus = "wins!"
-        toggleRollNewGameBtn(btnClass);
-
-      }else {
-        // we continue...
-        currentStatus = "Playing..."
-        scoreDisplay.textContent = currentscore
+      }else{
+        // Player 2 rules
+          let roll = rollDice();
+          currentscore += roll;
       }
-      gameStatus.textContent = currentStatus
+
     } else if (btnClass.classList.contains("reset-btn")){
       //reset the game board
-
-      // reset to roll button
       toggleRollNewGameBtn(btnClass, false)
+      
       // reset game variables
       startGame(gameType)
-
     }
   });
 })
+
+
+const onePlayerRules = (btnClass) =>{
+  //roll dice button clicked
+
+  let roll = rollDice();
+  currentscore += roll;
+  setTimeout(function () {
+    let currentStatus = "";
+    if (roll === 1) {
+      // score of 1 = insta-lose
+
+      currentStatus = "Lost! rolled a 1";
+      playAudio(`${defaultMediaPath}lostGame.wav`);
+      toggleRollNewGameBtn(btnClass);
+    } else if (currentscore >= 21) {
+      // win!
+
+      scoreDisplay.textContent = currentscore;
+      currentStatus = "wins!";
+      playAudio(`${defaultMediaPath}wonGame.wav`);
+      toggleRollNewGameBtn(btnClass);
+    } else {
+      // we continue...
+
+      currentStatus = "Playing...";
+      scoreDisplay.textContent = `Score: ${currentscore}`;
+    }
+    gameStatus.textContent = currentStatus;
+  }, 3000);
+}
+
+
+const twoPlayerBoard = () => {
+  twoPlayer.innerHTML = "";
+  for (let i = 0; i < 2; i++){
+    let html = `
+    <div class="container player${i + 1}">  
+      <div class="player">
+        <h3 class="player-name">Player ${i + 1}</h3>
+      </div>
+      <div class="score">
+        <h2>0</h2>
+      </div>
+      <div class="current-score">
+        <h4>Current</h4>
+        <h4 class="current-score">0</h4>
+      </div>
+      <div class="dice-img"></div>  
+      <button class="btn roll-btn">Roll</button>
+      <button class="btn hold-btn">Hold</button>
+    <div>  
+  `;
+
+  twoPlayer.innerHTML += html
+  }
+
+};
+
+
 
 const rollDice = () =>{
   let dieImg = ""
@@ -162,7 +205,8 @@ const rollDice = () =>{
     displayDiceImg(dieImg)
   });
 
-  return score
+  return score;
+  
 }
 
 const toggleRollNewGameBtn = (btn, isResetBtn = true) => {
