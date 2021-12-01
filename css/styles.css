@@ -94,7 +94,6 @@ Dice Game
   max-height: 80vh;
   height: 80vh;
   width: 100vw;
-  z-index: -1;
 }
 
 .wrapper .players{
@@ -113,7 +112,6 @@ Dice Game
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  z-index: 1;
 }
 
 .splash{
@@ -141,7 +139,7 @@ Dice Game
 }
 .btn:hover{
   cursor: pointer;
-  
+  background-color: orange;
 }
 
 #dice-img img{

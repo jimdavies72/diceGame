@@ -8,6 +8,8 @@ const diceImg = document.getElementById("dice-img")
 const gameStatus = document.getElementById("status")
 let currentscore = 0
 let gameType = ""
+const defaultMediaPath = "./media/";
+const defaultDiceImg = `${defaultMediaPath}dice-roll.gif`;
 
 // random number generator
   const getRandomInt = (min, max) => {
@@ -16,6 +18,12 @@ let gameType = ""
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
+// play audio function
+const playAudio = (soundPath) => {
+  const audio = new Audio(soundPath);
+  audio.play();
+}
+
 
 const toggleVisible = (boardType) => {
   if (boardType === "splash") {
@@ -23,7 +31,6 @@ const toggleVisible = (boardType) => {
     onePlayer.style.display = "none";
     twoPlayer.style.display = "none";
   } else if (boardType === "Player 1") {
-    console.log("player 1")
     //remove splash screen if visible
     if (splash.style.display === "block") {
       splash.style.display = "none";
@@ -31,7 +38,6 @@ const toggleVisible = (boardType) => {
     twoPlayer.style.display = "none";
     onePlayer.style.display = "";
   } else if (boardType === "Player 2") {
-    console.log("player 2");
     //remove splash screen if visible
     if (splash.style.display === "block") {
       splash.style.display = "none";
@@ -53,10 +59,11 @@ const startGame = (boardType) => {
     scoreDisplay.textContent = "0";
     gameStatus.textContent = "Ready to roll!";
     resetDiceImg();
-    let dieImgSrc = "./media/dice-roll.gif";
+    let dieImgSrc = defaultDiceImg;
     displayDiceImg(dieImgSrc);
   } else if (boardType === "Player 2") {
     // 2 player
+
   }
 };
 
@@ -64,21 +71,21 @@ const startGame = (boardType) => {
 startGame("splash")
 
 
+// which button has been clicked
 btns.forEach((btn) => {
   btn.addEventListener("click", (e) => {
     let btnClass = e.currentTarget;
     
     if (btnClass.classList.contains("player-btn")){
-      //player button has been pressed
-      if (gameType === ""){
-        gameType = btnClass.innerHTML
-      }
-      console.log(gameType)
+      //player button clicked
+      gameType = btnClass.innerHTML;
       startGame(gameType)
-    }else if (btnClass.classList.contains("roll-btn")) {
-      //roll dice button pressed
 
-      let roll = rollDice("land");
+    }else if (btnClass.classList.contains("roll-btn")) {
+      //roll dice button clicked
+
+      //TODO: this needs to be async as the score is being returned before end of roll animation
+      let roll = rollDice();
       currentscore += roll;
 
       let currentStatus = ""
@@ -86,6 +93,7 @@ btns.forEach((btn) => {
         // score of 1 = insta-lose
 
         currentStatus = "Lost! they rolled a 1"
+        playAudio(`${defaultMediaPath}lostGame.wav`);
         toggleRollNewGameBtn(btnClass);
 
       } else if ( currentscore >= 21 ) {
@@ -113,67 +121,66 @@ btns.forEach((btn) => {
   });
 })
 
-const toggleRollNewGameBtn = (btn, isResetBtn = true) =>{
+const rollDice = () =>{
+  let dieImg = ""
+  let score = 0
+  const soundPath = `${defaultMediaPath}shakeDice.wav`;
+
+  score = getRandomInt(1, 6);
+  switch (score) {
+    case 1:
+      dieImg = `${defaultMediaPath}die-one.png`;
+      break;
+    case 2:
+      dieImg = `${defaultMediaPath}die-two.png`;
+      break;
+    case 3:
+      dieImg = `${defaultMediaPath}die-three.png`;
+      break;
+    case 4:
+      dieImg = `${defaultMediaPath}die-four.png`;
+      break;
+    case 5:
+      dieImg = `${defaultMediaPath}die-five.png`;
+      break;
+    case 6:
+      dieImg = `${defaultMediaPath}die-six.png`;
+      break;
+  }
+  // remove the img element if it exists
+  resetDiceImg()
+  displayDiceImg(defaultDiceImg);
+
+  //play shaking dice sound
+  //playAudio(soundPath)
+  
+  const audio = new Audio(soundPath);
+  audio.play();
+  audio.addEventListener("ended", () => {
+    audio.currentTime = 0;
+    resetDiceImg();
+    displayDiceImg(dieImg)
+  });
+
+  return score
+}
+
+const toggleRollNewGameBtn = (btn, isResetBtn = true) => {
   // during the game the button will be 'roll'
   // at the end of the game either loss or win then the
   // button will become a reset button
-  if (isResetBtn){
+  if (isResetBtn) {
     // becomes a reset button
-    btn.innerHTML = "New Game"
-    btn.classList.remove("roll-btn")
-    btn.classList.add("reset-btn")
-  }else {
+    btn.innerHTML = "New Game";
+    btn.classList.remove("roll-btn");
+    btn.classList.add("reset-btn");
+  } else {
     // becomes a roll button
     btn.innerHTML = "Roll";
     btn.classList.remove("reset-btn");
     btn.classList.add("roll-btn");
   }
-
-}
-
-const rollDice = (rollStage) =>{
-  let dieImg = ""
-  let score = 0
-  
-  if(rollStage === "roll"){
-    // rolling...
-    dieImg = "./media/dice-roll.gif"
-    score = 0
-  } else if (rollStage === "land") {
-    // die has landed what did we get?
-    score = getRandomInt(1, 6);
-    switch (score) {
-      case 1:
-        dieImg = "./media/die-one.png";
-        break;
-      case 2:
-        dieImg = "./media/die-two.png";
-        break;
-      case 3:
-        dieImg = "./media/die-three.png";
-        break;
-      case 4:
-        dieImg = "./media/die-four.png";
-        break;
-      case 5:
-        dieImg = "./media/die-five.png";
-        break;
-      case 6:
-        dieImg = "./media/die-six.png";
-        break;
-    }
-  }
-  
-  // remove the img element if it exists
-  resetDiceImg()
-
-  //display the new image
-  displayDiceImg(dieImg)
-
-  return score
-}
-
-
+};
 
 const resetDiceImg = ()=> {
   //removes any existing images
