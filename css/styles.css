@@ -116,6 +116,15 @@ Dice Game
   z-index: 1;
 }
 
+.splash{
+  background-color: palegreen;
+}
+
+.splash div{
+  width: 60%;
+}
+
+
 .btn{
   background-color: orangered;
   font-size: 1rem;
@@ -139,9 +148,6 @@ Dice Game
   width: 150px;
   height: 150px;
 }
-
-
-
 
 
 /* 

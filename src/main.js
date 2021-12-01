@@ -1,5 +1,7 @@
 const btns = document.querySelectorAll(".btn");
 const splash = document.querySelector(".splash")
+const onePlayer = document.querySelector(".one-player-board");
+const twoPlayer = document.querySelector(".two-player-board");
 const playerName = document.getElementById("player-name")
 const scoreDisplay = document.getElementById("score")
 const diceImg = document.getElementById("dice-img")
@@ -7,32 +9,60 @@ const gameStatus = document.getElementById("status")
 let currentscore = 0
 let gameType = ""
 
-
-startGame(splash)
-
 // random number generator
-const getRandomInt = (min, max) => {
+  const getRandomInt = (min, max) => {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-const startGame = (gameType)=>{
-  // starts or resets the game to 0
-  if (gameType === "splash"){
 
-  }else if (gameType === "Player 1"){
+const toggleVisible = (boardType) => {
+  if (boardType === "splash") {
+    splash.style.display = "block";
+    onePlayer.style.display = "none";
+    twoPlayer.style.display = "none";
+  } else if (boardType === "Player 1") {
+    console.log("player 1")
+    //remove splash screen if visible
+    if (splash.style.display === "block") {
+      splash.style.display = "none";
+    }
+    twoPlayer.style.display = "none";
+    onePlayer.style.display = "";
+  } else if (boardType === "Player 2") {
+    console.log("player 2");
+    //remove splash screen if visible
+    if (splash.style.display === "block") {
+      splash.style.display = "none";
+    }
+    onePlayer.style.display = "none";
+    twoPlayer.style.display = "";
+  }
+};
+
+
+// starts or resets the game variables to init
+const startGame = (boardType) => {
+  // what game board do we need? splash, 1 player or 2 player
+  toggleVisible(boardType);
+
+  if (boardType === "Player 1") {
     currentscore = 0;
-    playerName.innerHTML = gameType
+    playerName.innerHTML = boardType;
     scoreDisplay.textContent = "0";
-    gameStatus.textContent = "Ready to roll!"; 
+    gameStatus.textContent = "Ready to roll!";
     resetDiceImg();
-    let dieImgSrc = "./media/dice-roll.gif"
+    let dieImgSrc = "./media/dice-roll.gif";
     displayDiceImg(dieImgSrc);
-  } else {
+  } else if (boardType === "Player 2") {
     // 2 player
   }
-}
+};
+
+// initiate the game
+startGame("splash")
+
 
 btns.forEach((btn) => {
   btn.addEventListener("click", (e) => {
@@ -158,13 +188,3 @@ const displayDiceImg = (src) =>{
   diceImg.appendChild(img);
 }
 
-
-// TODO: complete the display/hide logic. splash, 1 player, 2 player
-
-const toggleVisible = (gameType) => {
-  if (gameType === "splash") {
-      splash.style.display.style.display = "block";;
-      onePlayer.classList.add("visible");
-      onePlayer.classList.remove("hidden");
-    }
-};
