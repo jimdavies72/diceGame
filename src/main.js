@@ -54,7 +54,9 @@ const startGame = (boardType) => {
   toggleVisible(boardType);
 
   if (boardType === "Player 1") {
+  
     currentscore = 0;
+    scoreDisplay.textContent = `Score: 0`;
     playerName.innerHTML = boardType;
     gameStatus.textContent = "Ready to roll!";
     resetDiceImg();
@@ -82,25 +84,26 @@ btns.forEach((btn) => {
       //player button clicked
       gameType = btnClass.innerHTML;
       startGame(gameType)
-      
-    }else if (btnClass.classList.contains("roll-btn")) {
-      //roll dice button clicked
-      if (gameType === "Player 1"){
-        onePlayerRules(btnClass)
-
-      }else{
-        // Player 2 rules
-          let roll = rollDice();
-          currentscore += roll;
-      }
-
-    } else if (btnClass.classList.contains("reset-btn")){
-      //reset the game board
-      toggleRollNewGameBtn(btnClass, false)
-      
-      // reset game variables
-      startGame(gameType)
     }
+     
+    // are we playing a player 1 game or a player 2 game
+    if (gameType = "Player 1"){
+      if (btnClass.classList.contains("roll-btn")) {
+        //roll dice button clicked
+        onePlayerRules(btnClass);
+        
+      } else if (btnClass.classList.contains("reset-btn")) {
+        //reset the game board
+        toggleRollNewGameBtn(btnClass, false);
+
+        // reset game variables
+        startGame(gameType);
+      }
+    }else{
+      // Player 2 game
+
+    }
+    
   });
 })
 
@@ -121,7 +124,7 @@ const onePlayerRules = (btnClass) =>{
     } else if (currentscore >= 21) {
       // win!
 
-      scoreDisplay.textContent = currentscore;
+      scoreDisplay.textContent = `Score: ${currentscore}`;
       currentStatus = "wins!";
       playAudio(`${defaultMediaPath}wonGame.wav`);
       toggleRollNewGameBtn(btnClass);
