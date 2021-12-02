@@ -58,6 +58,7 @@ h3{
   text-transform: capitalize;
 }
 
+/* 
 .visible{
   display: block;
 
@@ -65,7 +66,7 @@ h3{
 
 .hidden{
   display: none;
-}
+} */
 
 
 /* 
@@ -90,7 +91,6 @@ Dice Game
 }
 
 .wrapper{
-  
   position: relative;
   display: flex;
   justify-content: flex-start ;
@@ -181,6 +181,14 @@ Dice Game
 .btn:hover{
   cursor: pointer;
   background-color: orange;
+}
+
+.disabled{
+  pointer-events: none;
+  background-color: grey;
+  color: darkslategray;
+  opacity: 0.7;
+  
 }
 
 .status-board{
