@@ -19,6 +19,7 @@ const scoreDisplay = document.querySelector(".score");
 const diceImg = document.querySelector(".dice-img");
 const gameStatus = document.getElementById("status");
 let currentScore = 0;
+const maxScore = 21;
 let currentGameType = "";
 const defaultMediaPath = "./media/";
 const defaultDiceImg = `${defaultMediaPath}dice-roll.gif`;
@@ -40,6 +41,7 @@ const playAudio = (soundPath) => {
 const toggleVisible = (boardType) => {
   if (boardType === "splash") {
     splash.style.display = "";
+  
     onePlayer.style.display = "none";
     twoPlayer.style.display = "none";
   } else if (boardType === "Player 1") {
@@ -63,7 +65,6 @@ const toggleVisible = (boardType) => {
 const startGame = (boardType) => {
   // what game board do we need? splash, 1 player or 2 player
   toggleVisible(boardType);
-
   currentScore = 0;
   if (boardType === "Player 1") {
     scoreDisplay.textContent = `Score: 0`;
@@ -133,7 +134,7 @@ const onePlayerRules = (btnClass) => {
       currentStatus = "Lost! rolled a 1";
       playAudio(`${defaultMediaPath}${soundEffectsArray[1]}`);
       toggleRollNewGameBtn(btnClass);
-    } else if (currentScore >= 21) {
+    } else if (currentScore >= maxScore) {
       // win!
 
       scoreDisplay.textContent = `Score: ${currentScore}`;

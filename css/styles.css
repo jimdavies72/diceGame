@@ -146,12 +146,11 @@ Dice Game
   background-color: orange;
 }
 
-
 .splash{
   background-color: none;
 }
 
-.splash div{
+.splash div {
   background-color: var(--col-orange-red);
   color: white;
   border: 1px solid orange;
@@ -239,6 +238,10 @@ Media Queries
   
   .players{
     flex-direction: column;
+  }
+
+  .status-board h2, h3{
+    font-size: 1rem;
   }
 
 }
