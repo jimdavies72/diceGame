@@ -218,12 +218,13 @@ Dice Game
 }
 
 .dice-img img{
+  background-color: black;
   margin-top: 3rem;
   margin-bottom: 2rem;
   width: 150px;
   height: 150px;
-  border: 1px solid var(--col-orange-red);
-  border-radius: 5px;
+  border: 1px solid white;
+  border-radius: 20px;
   box-shadow: var(--dark-shadow);
 }
 

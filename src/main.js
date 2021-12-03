@@ -95,11 +95,13 @@ btns.forEach((btn) => {
     }
 
     if (btnClass.classList.contains("reset-btn")) {
-        //reset the game board
-        toggleRollNewGameBtn(btnClass, false);
+      console.log(btnClass.classList);
+      // re-init the game     
+      startGame(currentGameType);
 
-        // reset game variables
-        startGame(currentGameType);
+      //FIXME: dice roll whilst button is 'New Game'. The domTokenList says 'reset-btn', however its item array says 'roll-btn'. I cant find any documentation on this... is this expected behaviour or the source of the bug?
+      // button is now 'New Game' so reset to 'Roll'
+      toggleRollNewGameBtn(btnClass, false);
         
     }
     
@@ -111,13 +113,8 @@ btns.forEach((btn) => {
       } 
 
     } else {
-      // Player 2 game
-      if (btnClass.classList.contains("roll-btn")) {
-
-      } else if (btnClass.classList.contains("hold-btn")) {
-
-
-      }
+      // Player 2 game - NOTE NO functionality. P2 game in separate project - diceGameTwoPlayer
+      
 
     }
   });
@@ -145,7 +142,6 @@ const onePlayerRules = (btnClass) => {
       toggleRollNewGameBtn(btnClass);
     } else {
       // we continue...
-
       currentStatus = "Playing...";
       scoreDisplay.textContent = `Score: ${currentScore}`;
     }
@@ -164,7 +160,8 @@ const twoPlayerBoard = () => {
     } else {
       buttonsDisabled = "";
     }
-        
+    
+    // just for illustrative purposes only!
     let html = `<div class="container player${i + 1}">  
       <div class="player">
         <h3 class="player-name">Player ${i + 1}</h3>
@@ -186,14 +183,13 @@ const twoPlayerBoard = () => {
 };
 
 const rollDice = () => {
-  let dieImg = "";
   let score = 0;
   
   score = getRandomInt(1, 6);
   
   // remove the img element if it exists and replace with dice roll gif
   resetDiceImg();
-   displayDiceImg(`${defaultMediaPath}${dieImageArray[0]}`);
+  displayDiceImg(`${defaultMediaPath}${dieImageArray[0]}`);
 
   const audio = new Audio(`${defaultMediaPath}${soundEffectsArray[0]}`);
   audio.play();
@@ -223,9 +219,7 @@ const toggleRollNewGameBtn = (btn, isResetBtn = true) => {
   }
 };
 
-
 const initDiceImg = () => {
-  
   resetDiceImg();
   displayDiceImg(defaultDiceImg);
 }
@@ -240,7 +234,5 @@ const resetDiceImg = () => {
 const displayDiceImg = (src) => {
   let img = document.createElement("img");
   img.src = src;
-  console.log(diceImg);
   diceImg.appendChild(img);
-  
 };
