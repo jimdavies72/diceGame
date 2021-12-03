@@ -48,7 +48,6 @@ const bounceDrum = () => {
       value: "1turn",
       easing: "easeInOutSine",
     },
-    borderRadius: "50%",
     delay: function (el, i, l) {
       return i * 1000;
     },
