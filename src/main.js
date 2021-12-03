@@ -37,6 +37,26 @@ const playAudio = (soundPath) => {
   audio.play();
 };
 
+const bounceDrum = () => {
+  anime({
+    targets: "div.box",
+    translateY: [
+      { value: 300, duration: 1000 },
+      { value: 0, duration: 1000 },
+    ],
+    rotate: {
+      value: "1turn",
+      easing: "easeInOutSine",
+    },
+    borderRadius: "50%",
+    delay: function (el, i, l) {
+      return i * 1000;
+    },
+  });
+};
+
+bounceDrum();
+
 // make board we want visible and hide the ones we dont 
 const toggleVisible = (boardType) => {
   if (boardType === "splash") {

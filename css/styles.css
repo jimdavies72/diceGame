@@ -75,7 +75,6 @@ Dice Game
 ---------
 */
 
-
 .players{
   padding: 10px;
   width: 40%;
@@ -105,7 +104,7 @@ Dice Game
   flex-direction: row;
 } 
 
-.section{
+.section {
   top: 50px;
   position:absolute;
   border: 2px solid var(--col-orange-red);
@@ -150,12 +149,13 @@ Dice Game
   background-color: none;
 }
 
-.splash div {
+.splash div :not(.anime-container div, h1) {
   background-color: var(--col-orange-red);
+  padding: 10px;
   color: white;
   border: 1px solid orange;
   border-radius: 5px;
-  width: 40%;
+  width: 60%;
   margin: 0 auto;
   text-align: center;
   box-shadow: var(--dark-shadow);
@@ -225,6 +225,44 @@ Dice Game
   border: 1px solid white;
   border-radius: 20px;
   box-shadow: var(--dark-shadow);
+}
+
+.anime-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.box{
+  position:relative;
+  width: 50px;
+  height: 50px;
+  margin: 4px;
+  /* display: inline-block; */
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+  border-radius: 5px;
+  box-shadow: var(--dark-shadow);
+}
+
+.red{
+  background-color: red;
+}
+
+.blue{
+  background-color: blue;
+}
+
+.green{
+  background-color: green;
+}
+
+.yellow{
+  background-color: yellow;
 }
 
 
