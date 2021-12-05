@@ -22,7 +22,6 @@ let currentScore = 0;
 const maxScore = 21;
 let currentGameType = "";
 const defaultMediaPath = "./media/";
-const defaultDiceImg = `${defaultMediaPath}dice-roll.gif`;
 
 // random number generator
 const getRandomInt = (min, max) => {
@@ -119,7 +118,7 @@ btns.forEach((btn) => {
       // re-init the game     
       startGame(currentGameType);
 
-      //FIXME: dice roll whilst button is 'New Game'. The domTokenList says 'reset-btn', however its item array says 'roll-btn'. I cant find any documentation on this... is this expected behaviour or the source of the bug?
+      //FIXME: dice roll whilst button is 'New Game'. The domTokenList is 'reset-btn', however its item array is 'roll-btn'. I cant find any documentation on this... is this expected behaviour or the source of the bug?
       // button is now 'New Game' so reset to 'Roll'
       toggleRollNewGameBtn(btnClass, false);
         
@@ -134,8 +133,7 @@ btns.forEach((btn) => {
 
     } else {
       // Player 2 game - NOTE NO functionality. P2 game in separate project - diceGameTwoPlayer
-      
-
+     
     }
   });
 });
@@ -241,7 +239,7 @@ const toggleRollNewGameBtn = (btn, isResetBtn = true) => {
 
 const initDiceImg = () => {
   resetDiceImg();
-  displayDiceImg(defaultDiceImg);
+  displayDiceImg(`${defaultMediaPath}${dieImageArray[0]}`);
 }
 
 const resetDiceImg = () => {
